@@ -21,8 +21,13 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <Link href="/">SermonCraft</Link>
-      <div>
+      {/* 🔥 Logo Placeholder */}
+      <div className="navbar-logo">
+        <img src="https://via.placeholder.com/40" alt="Logo" />
+        <Link href="/">SermonCraft</Link>
+      </div>
+
+      <div className="navbar-links">
         {user ? (
           <>
             <span>Welcome, {user.email}</span>
