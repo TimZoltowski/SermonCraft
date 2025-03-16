@@ -53,7 +53,7 @@ export default function AuthPage() {
       </form>
 
       <p className="auth-footer">
-        Don't have an account? <a href="/signup">Sign up here</a>
+        Don&apos;t have an account? <a href="/signup">Sign up here</a>
       </p>
       <p className="auth-footer">
         Forgot your password? <a href="/forgot-password">Reset it</a>
