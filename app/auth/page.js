@@ -1,41 +1,63 @@
 "use client";
-
 import { useState } from "react";
-import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, googleProvider } from "@/lib/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import "../globals.css"; // ✅ Import the global styles
 
-export default function Login() {
-  const router = useRouter();
+export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  // Email/Password Login
-  const loginWithEmail = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
-      router.push("/");
-    } catch (error) {
-      alert(error.message);
+      router.push("/dashboard"); // ✅ Redirect after login
+    } catch (err) {
+      setError("Invalid email or password. Please try again.");
     }
   };
 
-
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={loginWithEmail}>Login</button>
+    <div className="auth-container">
+      <h2 className="auth-title">Login to SermonCraft</h2>
+      <p className="auth-subtitle">Access your sermon preparation tools.</p>
+
+      {error && <p className="auth-error">{error}</p>}
+
+      <form onSubmit={handleLogin} className="auth-form">
+        <input
+          type="email"
+          placeholder="Email"
+          className="auth-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="auth-input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit" className="auth-button">
+          Login
+        </button>
+      </form>
+
+      <p className="auth-footer">
+        Don't have an account? <a href="/signup">Sign up here</a>
+      </p>
+      <p className="auth-footer">
+        Forgot your password? <a href="/forgot-password">Reset it</a>
+      </p>
     </div>
   );
 }
