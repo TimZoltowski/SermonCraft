@@ -1,38 +1,52 @@
 "use client";
-
 import { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import "../globals.css"; // ✅ Import global styles
 
-export default function ForgotPassword() {
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const handlePasswordReset = async () => {
+  const handleReset = async (e) => {
+    e.preventDefault();
     setMessage("");
     setError("");
 
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage("Password reset email sent! Check your inbox.");
-    } catch (error) {
-      console.error("Password Reset Error:", error);
-      setError(error.message);
+      setMessage("A password reset email has been sent.");
+    } catch (err) {
+      setError("Failed to send reset email. Please check your email and try again.");
     }
   };
 
   return (
-    <div>
-      <h2>Reset Your Password</h2>
-      {message && <p style={{ color: "green" }}>{message}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input
-        type="email"
-        placeholder="Enter your email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button onClick={handlePasswordReset}>Send Password Reset Email</button>
+    <div className="auth-container">
+      <h2 className="auth-title">Forgot Your Password?</h2>
+      <p className="auth-subtitle">Enter your email to reset your password.</p>
+
+      {message && <p className="auth-message">{message}</p>}
+      {error && <p className="auth-error">{error}</p>}
+
+      <form onSubmit={handleReset} className="auth-form">
+        <input
+          type="email"
+          placeholder="Enter your email"
+          className="auth-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button type="submit" className="auth-button">
+          Send Reset Email
+        </button>
+      </form>
+
+      <p className="auth-footer">
+        Remember your password? <a href="/auth">Log in here</a>
+      </p>
     </div>
   );
 }
