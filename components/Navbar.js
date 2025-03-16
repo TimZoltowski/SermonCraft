@@ -1,10 +1,8 @@
-"use client"; // Ensures this runs on the client side
-
+"use client";
 import { useState, useEffect } from "react";
 import { auth, onAuthStateChanged, signOut } from "@/lib/firebase";
 import Link from "next/link";
-
-console.log("✅ Navbar is being rendered!"); // Debugging message
+import "../app/globals.css"; // ✅ Import the global CSS file
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
@@ -22,21 +20,21 @@ export default function Navbar() {
   };
 
   return (
-    <nav style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
-      <Link href="/" style={{ marginRight: "10px" }}>Home</Link>
-      {user ? (
-        <>
-          <span style={{ marginRight: "10px" }}>Welcome, {user.email}</span>
-          <button onClick={handleLogout} style={{ cursor: "pointer", marginLeft: "10px" }}>
-            Logout
-          </button>
-        </>
-      ) : (
-        <>
-          <Link href="/auth" style={{ marginRight: "10px" }}>Login</Link>
-          <Link href="/signup">Sign Up</Link>
-        </>
-      )}
+    <nav className="navbar">
+      <Link href="/">SermonCraft</Link>
+      <div>
+        {user ? (
+          <>
+            <span>Welcome, {user.email}</span>
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link href="/auth">Login</Link>
+            <Link href="/signup">Sign Up</Link>
+          </>
+        )}
+      </div>
     </nav>
   );
 }
